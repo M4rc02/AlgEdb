@@ -1,0 +1,70 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+#define MAX 20
+
+void QuickSort(int *v, int inicio, int fim){
+	int pivo;
+	if(fim > inicio){
+		pivo = particao(v, inicio, fim);
+		QuickSort(v, inicio, fim-1);
+		QuickSort(v, pivo+1, fim);
+	}
+}
+
+int particao(int *v, int inicio, int fim){
+	int esq, dir, pivo, aux;
+	esq = inicio; dir = fim; pivo = v[inicio];
+	
+	while(esq < dir){
+		while(v[esq] <= pivo)
+			esq++;
+		
+		while(v[dir] > pivo)
+			dir--;
+	
+		if(esq < dir){
+			aux = v[esq];
+			v[esq] = v[dir];
+			v[dir] = aux;	
+		}
+	}
+	
+	v[inicio] = v[dir];
+	v[dir] = pivo;
+	return dir;
+}
+
+int buscar(int v[], int x, int n){
+	int i = 0, f = n-1, m;
+	while(i <= f){
+		m = (i+f)/2;
+		if(x == v[m]) return 1;
+		if(x < v[m]) f = m-1;
+		else i = m+1;
+	}
+	return 0;
+}
+
+int main(){
+	int vetor[MAX], i, proc;
+		
+	printf("Vetor desordenado: \n");
+	for(i = 0; i < MAX; i++){
+		vetor[i] = rand()%MAX;
+		printf("%d ", vetor[i]);
+	}
+	
+	QuickSort(vetor, 0, MAX-1);
+	
+	printf("\nVetor ordenado: \n");
+	for(i = 0; i < MAX; i++)
+		printf("%d ", vetor[i]);
+	
+	printf("\nProcurar: ");
+   scanf("%d", &proc);
+   
+   printf("\n0 -> False\n");
+   printf("1 -> True\n\n");
+   printf(">%d<", buscar(vetor, proc, MAX));
+}
